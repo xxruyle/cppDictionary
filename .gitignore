@@ -1,4 +1,5 @@
-.vscode
+.vscode/ 
+Makefile
 
 # Prerequisites
 *.d
@@ -33,4 +34,3 @@
 *.out
 *.app
 
-Makefile
