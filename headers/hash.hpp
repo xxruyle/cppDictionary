@@ -24,6 +24,7 @@ class Dictionary {
         void printValues(); // prints only the values 
         void findKey(std::string key); // returns the index of a key 
         void findValue(int i); // returns the index of a value 
+        void removePair(int i); // removes pair according to a certain index 
 };
 
 #endif
