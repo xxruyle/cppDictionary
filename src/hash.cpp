@@ -27,6 +27,11 @@ void Dictionary::printDictionary()  // python like printing out of all the keys 
             std::cout << ", "; 
         }
     }
+
+    // If the dictionary is empty 
+    if (keys.size() == 0 && values.size() == 0) {
+        std::cout << " }";
+    }
     std::cout << "\n\n"; 
 }
 
@@ -85,4 +90,12 @@ void Dictionary::removePair(int i)
     values.erase(values.begin()+i);
 }
 
+
+void Dictionary::clearDictionary()
+{
+    for (int i = 0; i <= ((keys.size() + values.size())/2); i++) {
+        keys.pop_back();
+        values.pop_back();
+    }
+}
 

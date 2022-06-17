@@ -25,6 +25,9 @@ class Dictionary {
         void findKey(std::string key); // returns the index of a key 
         void findValue(int i); // returns the index of a value 
         void removePair(int i); // removes pair according to a certain index 
+        void clearDictionary(); // deletes every pair 
+        void copyDictionary(); 
+        void pop(); // removes the last added pair  
 };
 
 #endif
