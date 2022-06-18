@@ -91,11 +91,25 @@ void Dictionary::removePair(int i)
 }
 
 
-void Dictionary::clearDictionary()
+void Dictionary::clear()
 {
     for (int i = 0; i <= ((keys.size() + values.size())/2); i++) {
         keys.pop_back();
         values.pop_back();
+    }
+}
+
+void Dictionary::pop()
+{
+    keys.pop_back();
+    values.pop_back(); 
+}
+
+void Dictionary::copyFrom(Dictionary& input)
+{
+    for (int i = 0; i < input.keys.size(); i++) {
+        keys.push_back(input.keys[i]);
+        values.push_back(input.values[i]);
     }
 }
 
