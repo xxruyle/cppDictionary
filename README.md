@@ -5,7 +5,8 @@ A simple python like key-string, value-int pair data structre
 
 ### Setup 
 ```C++
-Dictionary d1("NewDic"); 
+Dictionary<std::string, int> d1("stringIntDic"); 
+Dictionary<int, char> d2("intCharDic")
 ```
 
 ### Adding pairs 
