@@ -1,5 +1,5 @@
 # cppDictionary 
-A simple python like key-string, value-int pair data structre  
+A simple python like key-value pair data structre  
 
 # Usage 
 
@@ -20,5 +20,32 @@ d1.printDictionary();
 
 
 >>> NewDic 
-{'Year', 2022}
+{'Year': 2022}
+```
+
+
+### Removing a pair 
+```C++
+d1.removePair(0);
+
+// will remove a specific pair from the dictionary  
+```
+
+### Clearing the dictionary 
+```C++
+d1.clear();
+
+// will remove every pair from the dictionary  
+```
+
+### Popping the dictionary 
+```C++
+d1.pop()
+```
+
+### Copying a dictionary 
+```C++
+d2.copyFrom(d1);
+
+//Copies the dictionary from d1 into d2 so they have the same pairs 
 ```
