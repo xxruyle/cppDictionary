@@ -49,3 +49,8 @@ d2.copyFrom(d1);
 
 //Copies the dictionary from d1 into d2 so they have the same pairs 
 ```
+
+### Declaring a dictionary the python way 
+```C++
+d1.pythonAdd("'Age': 21"); 
+```

@@ -4,6 +4,7 @@
 #include <iostream> 
 #include <stdio.h>
 #include <string>
+#include <cstring>
 #include <vector>
 
 template<class T, class U> 
@@ -26,7 +27,50 @@ class Dictionary {
             values.push_back(value);
         }
 
+        std::string concat(std::vector<char> source, std::vector<std::string> destination) 
+        {
+            std::string placehold; 
+            for (int i = 0; i < source.size(); i++) {
+                placehold += source[i]; 
+            }
 
+            return placehold;
+        }
+
+        //1) if char is not an apostrophe, colon, or comma, add to a vector 
+        //2) If the char is an apostrophe, colon or comma, join the list into a string, add it to another vector, and  
+        //3) clear the og vector if the vector's size != 0 
+        void pythonAdd(std::string pythonDic)
+        {
+            std::vector<char> initialVec = {}; 
+            std::vector<std::string> finalVec = {}; 
+            std::vector<std::string> finalVecValue = {}; 
+
+            for (int i = 0; i < pythonDic.size() + 1; i++) {
+                if (pythonDic[i] != '\'' && pythonDic[i] != ':' && pythonDic[i] != ',' && pythonDic[i] != ' ') {
+                    initialVec.push_back(pythonDic[i]); 
+                } else if (pythonDic[i] == '\'' && pythonDic[i+1] == ':') { //if the key's chars have ended 
+                    std::string newString = concat(initialVec, finalVec); 
+                    finalVec.push_back(newString);  
+                    initialVec.clear(); 
+                } else if (pythonDic[i] == ',') {
+                    std::string newStringValue = concat(initialVec, finalVecValue); 
+                    finalVecValue.push_back(newStringValue); 
+                    initialVec.clear(); 
+                }
+            }
+
+
+            if (finalVec.size() == finalVecValue.size()) {
+                for (int i = 0; i < finalVec.size(); i++) {
+                    keys.push_back(finalVec[i]); 
+                    values.push_back(finalVecValue[i]); 
+                }
+            } else {
+                throw std::invalid_argument("Not a pair"); 
+            }
+
+        }
 
 
         // prints out all the keys and values 
@@ -41,7 +85,6 @@ class Dictionary {
                     std::cout << keys[i] << ": " << values[i];
                 }
                 
-        
                 if (i == values.size() - 1) {
                     std::cout << "}"; 
                 } else {
