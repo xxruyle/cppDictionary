@@ -51,6 +51,7 @@ d2.copyFrom(d1);
 ```
 
 ### Declaring a dictionary the python way 
+- Only works with strings
 ```C++
 d1.pythonAdd("'Age': 21"); 
 ```

@@ -7,69 +7,89 @@
 #include <cstring>
 #include <vector>
 
+
+
+//A pythonic like dictionary data structure in C++ 
 template<class T, class U> 
 class Dictionary {
-    //A key string, value int pair data structure
     public: 
         std::string dictionaryName; 
         std::vector<T> keys = {};
         std::vector<U> values = {}; 
 
+        //Declaring the class with a name for the dictionary 
         Dictionary(std::string name) 
         {
             dictionaryName = name; 
         }
 
-
+        //Adds a pair to two vectors 
         void addPair(T key, U value) 
         {
             keys.push_back(key);
             values.push_back(value);
         }
 
-        std::string concat(std::vector<char> source, std::vector<std::string> destination) 
+
+        std::string concat(std::vector<char> source) 
         {
             std::string placehold; 
             for (int i = 0; i < source.size(); i++) {
                 placehold += source[i]; 
             }
 
-            return placehold;
+            return placehold; 
         }
 
-        //1) if char is not an apostrophe, colon, or comma, add to a vector 
-        //2) If the char is an apostrophe, colon or comma, join the list into a string, add it to another vector, and  
-        //3) clear the og vector if the vector's size != 0 
+        bool isNum(std::string strInput)
+        {
+            for (int i = 0; i < strInput.size(); i++) {
+                if (std::isdigit(strInput[i]) == 0) {
+                    return false; 
+                }
+            }
+            return true; 
+        }
+
+
+        //Make a dictionary like you would in python by passing in a string key value pair 
+        /*
+        {'Year': 1995, 'Age': 27}
+        */
+
         void pythonAdd(std::string pythonDic)
         {
             std::vector<char> initialVec = {}; 
-            std::vector<std::string> finalVec = {}; 
-            std::vector<std::string> finalVecValue = {}; 
+            std::vector<T> finalVecKey = {}; 
+            std::vector<U> finalVecValue = {}; 
 
             for (int i = 0; i < pythonDic.size() + 1; i++) {
-                if (pythonDic[i] != '\'' && pythonDic[i] != ':' && pythonDic[i] != ',' && pythonDic[i] != ' ') {
+                if (pythonDic[i] != '\'' && pythonDic[i] != ':' && pythonDic[i] != ',' && pythonDic[i] != ' ' && pythonDic[i] != '{' && pythonDic[i] != '}') {
                     initialVec.push_back(pythonDic[i]); 
                 } else if (pythonDic[i] == '\'' && pythonDic[i+1] == ':') { //if the key's chars have ended 
-                    std::string newString = concat(initialVec, finalVec); 
-                    finalVec.push_back(newString);  
+                    std::string newStringKey = concat(initialVec); 
+                    finalVecKey.push_back(newStringKey);  
                     initialVec.clear(); 
-                } else if (pythonDic[i] == ',') {
-                    std::string newStringValue = concat(initialVec, finalVecValue); 
+                } else if (pythonDic[i] == ',' || (i == pythonDic.size() - 1 || pythonDic[i+1] == '}')) {
+                    std::string newStringValue = concat(initialVec); 
                     finalVecValue.push_back(newStringValue); 
                     initialVec.clear(); 
                 }
             }
 
+            /*
+            if U is an integer convert finalVecKey[i] to integer 
+            vice versa 
 
-            if (finalVec.size() == finalVecValue.size()) {
-                for (int i = 0; i < finalVec.size(); i++) {
-                    keys.push_back(finalVec[i]); 
+            */
+            if (finalVecKey.size() == finalVecValue.size()) {
+                for (int i = 0; i < finalVecKey.size(); i++) {
+                    keys.push_back(finalVecKey[i]); 
                     values.push_back(finalVecValue[i]); 
                 }
             } else {
-                throw std::invalid_argument("Not a pair"); 
+                throw std::invalid_argument("Not correct format"); 
             }
-
         }
 
 
@@ -79,8 +99,13 @@ class Dictionary {
             std::cout << dictionaryName << std::endl; 
             std::cout << "{";
             for (int i = 0; i < ((keys.size() + values.size())/2); i++) {
-                if (typeid(T) == typeid(std::string)) {
-                    std::cout << "'" << keys[i] << "'" << ": " << values[i];
+                if (typeid(T) == typeid(std::string) || typeid(T) == typeid(char)) {
+                    std::cout << "'" << keys[i] << "'" << ": ";
+                    if (typeid(U) == typeid(int)) {
+                        std::cout << values[i]; 
+                    } else if (typeid(U) == typeid(std::string) || typeid(U) == typeid(char)) {
+                        std::cout << "'" << values[i] << "'"; 
+                    }
                 } else { 
                     std::cout << keys[i] << ": " << values[i];
                 }
@@ -99,42 +124,42 @@ class Dictionary {
             std::cout << "\n\n";        
         }
 
-
-        void printKeys()  // prints only the keys 
+        // prints only the keys 
+        void printKeys()  
         {
             for (int i = 0; i < keys.size(); i++) {
                 std::cout << keys[i] << std::endl;
             }
         }
 
-
-        void printValues() // prints only the values 
+        // prints only the values 
+        void printValues() 
         { 
             for (int i = 0; i < values.size(); i++) {
                 std::cout << values[i] << std::endl;
             }
         }
 
-
-        void findKey(T key) // returns the index of a key 
+        // returns the index of a key 
+        void findKey(T key) 
         {
             bool found = false; 
-            for (int i = 0; i < key.size(); i++) {
+            for (int i = 0; i <= key.size() + 1; i++) {
                 if (keys[i] == key){
                     std::cout <<  i << std::endl;
                     found = true; 
                 }
             }
             if (!found) {
-                std::cout << "Key could not be found";
+                throw std::invalid_argument("Key could not be found");
             }
         }
 
-
-        void findValue(U value) // returns the index of a value 
+        // returns the index of a value 
+        void findValue(U value) 
         {
             bool found = false; 
-            for (int i = 0; i < values.size(); i++) {
+            for (int i = 0; i <= values.size() + 1; i++) {
                 if (values[i] == value){
                     std::cout << i << std::endl;
                     found = true; 
@@ -142,19 +167,19 @@ class Dictionary {
             }
         
             if (!found) {
-                std::cout << "Key could not be found";
+                throw std::invalid_argument("Key could not be found");
             }
         }
 
-
-        void removePair(uint32_t i) // removes pair according to a certain index 
+        // removes pair according to a certain index 
+        void removePair(uint32_t i) 
         {
             keys.erase(keys.begin()+i);
             values.erase(values.begin()+i);
         }
 
-
-        void clear() // deletes every pair 
+        // deletes every pair 
+        void clear() 
         {
             for (int i = 0; i <= ((keys.size() + values.size())/2); i++) {
                 keys.pop_back();
@@ -162,8 +187,8 @@ class Dictionary {
             }
         }
 
-
-        void copyFrom(Dictionary& input) // copies from another dictionary 
+        // copies from another dictionary 
+        void copyFrom(Dictionary& input) 
         {
             for (int i = 0; i < input.keys.size(); i++) {
                 keys.push_back(input.keys[i]);
@@ -171,8 +196,8 @@ class Dictionary {
             }
         }
 
-
-        void pop() // removes the last added pair  
+        // removes the last added pair  
+        void pop() 
         {
             keys.pop_back();
             values.pop_back(); 
